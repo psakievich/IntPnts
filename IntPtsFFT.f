@@ -26,7 +26,7 @@ C     1) The way the points are defined are compatible with the FFT they
 C        intend to perform.
 C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C     SUBROUTINE MYFFT
-      subroutine MyFFT()
+      subroutine MyFFT(chFilename)
       include 'SIZE'
       include 'TOTAL'
       include 'MYFFT'
@@ -60,7 +60,7 @@ C     SUBROUTINE MYFFT
            call FFT_Create_Plan()
       endif
       if(nid.lt.nFFTp2c)then
-       write(chFilename,"(A4)")"test"
+C       write(chFilename,"(A4)")"test"
        call dwritevts(nid,nFFTdims,nFFTflds,rFFTpts,rFFTvals,chFilename)
       endif
       ! 3a) Convert velocity to cylindrical coordinates
@@ -73,8 +73,8 @@ C     SUBROUTINE MYFFT
           end if
       ! 6) If desired write to file
       !     call FFT_ASCII_PRINT()
-           call FFT_OUTPUT_WAVENUMBERS(nFFToutstep)
-           call FFT_ENERGY_REPORT(nFFToutstep)
+           call FFT_OUTPUT_WAVENUMBERS(chFilename)
+      !     call FFT_ENERGY_REPORT(nFFToutstep)
       nFFToutstep=nFFToutstep+1
       return
       end
@@ -433,7 +433,7 @@ C++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 C     SUBROUTINE FFT_OUTPUT_WAVENUMBERS()
 C     This subroutine is to output the data for each wave number in a
 C     seperate file.  Data is collected onto rank0 and written there
-      subroutine FFT_OUTPUT_WAVENUMBERS(nFFToutstep,chFileName)
+      subroutine FFT_OUTPUT_WAVENUMBERS(chFileName)
       include 'SIZE'
       include 'TOTAL'
       include 'MYFFT'
